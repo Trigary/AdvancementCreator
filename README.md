@@ -1,6 +1,6 @@
 # Advancement Creator
 
-*For the SpigotMC forum thread, click [here]().*
+*For the SpigotMC forum thread, click [here](https://www.spigotmc.org/threads/advancement-creator-rapid-advancement-creation-library.293465/).*
 
 Manually writing JSON files in order to create advancements one-by-one is a slow and menial process.
 This library aims to greatly reduce that work, allowing you to focus more on the creative side of the task.
