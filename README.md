@@ -1,4 +1,4 @@
-# Advancement Creator
+# Advancement Creator [![](https://jitpack.io/v/Trigary/AdvancementCreator.svg)](https://jitpack.io/#Trigary/AdvancementCreator)
 
 *For the SpigotMC forum thread, click [here](https://www.spigotmc.org/threads/advancement-creator-rapid-advancement-creation-library.293465/).*
 
@@ -21,12 +21,40 @@ Runtime validation instantly spots invalid setups, reducing the time needs to be
 ## What it lacks:
  - JSON string to Advancement class instance conversion (it only goes one way)
  - After much consideration, I decided to trade in immutability for faster development times.
- - A Maven repository in order to make the inclusion process easier
 
 ## Usage:
-You can either download the source code and compile it yourself in order to include this project in your library
-or you can download the newest release from [this page](https://github.com/Trigary/AdvancementCreator/releases).
+You can either download the source code and compile it yourself in order to include this project in your library, you can download the newest release from [this page](https://github.com/Trigary/AdvancementCreator/releases) or you can use your favorite build system to always stay up to date.
 This library comes with a single, shaded dependency: JetBrains Annotations (for the Nullable annotations)
+
+### Gradle
+```groovy
+repositories {
+  maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+  compile 'com.github.Trigary:AdvancementCreator:v1.0'
+}
+```
+
+### Maven
+
+```xml
+<repositories>
+  <repository>
+   <id>jitpack.io</id>
+   <url>https://jitpack.io</url>
+  </repository>
+</repositories>
+
+<dependencies>
+ <dependency>
+  <groupId>com.github.Trigary</groupId>
+  <artifactId>AdvancementCreator</artifactId>
+  <version>v1.0</version>
+ </dependency>
+</dependencies>
+```
 
 ## Sample
 The goal of this library is to make advancement creation as fast and as simple as possible,
