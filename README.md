@@ -24,6 +24,7 @@ Runtime validation instantly spots invalid setups, reducing the time needs to be
 
 ## Usage:
 You can either download the source code and compile it yourself in order to include this project in your library, you can download the newest release from [this page](https://github.com/Trigary/AdvancementCreator/releases) or you can use your favorite build system to always stay up to date.
+If you would like to check the JavaDocs online, click [here](http://trigary.hu/javadocs/advancement-creator/).
 This library comes with a single, shaded dependency: JetBrains Annotations (for the Nullable annotations)
 
 ### Gradle
