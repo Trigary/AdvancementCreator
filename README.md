@@ -34,7 +34,7 @@ repositories {
 }
 
 dependencies {
-  compile 'com.github.Trigary:AdvancementCreator:v1.0'
+  compile 'com.github.Trigary:AdvancementCreator:v1.1'
 }
 ```
 
@@ -52,7 +52,7 @@ dependencies {
  <dependency>
   <groupId>com.github.Trigary</groupId>
   <artifactId>AdvancementCreator</artifactId>
-  <version>v1.0</version>
+  <version>v1.1</version>
  </dependency>
 </dependencies>
 ```
@@ -66,8 +66,8 @@ public class Main extends JavaPlugin {
     @Override
     public void onEnable() {
         //This line configures the followings: create the NamespacedKeys in this plugin's namespace,
-        //activate the advancements in the default world but don't instantly reload the data cache
-        AdvancementFactory factory = new AdvancementFactory(this, false);
+        //activate the advancements but don't instantly reload the data cache
+        AdvancementFactory factory = new AdvancementFactory(this, true, false);
         
         //Create a root advancement which is also automatically unlocked (with a player head icon)
         Advancement root = factory.getRoot("newbie/root", "Getting Started", "Newbie Advancements", MaterialId.SKULL, 3, "blocks/dirt");

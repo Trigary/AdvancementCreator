@@ -22,23 +22,23 @@ public class AdvancementTest {
 	public void setUp() {
 		plugin = Mockito.mock(Plugin.class);
 		Mockito.when(plugin.getName()).thenReturn("TestPlugin");
-		factory = new AdvancementFactory(plugin, null, false);
+		factory = new AdvancementFactory(plugin, false, false);
 	}
 	
 	
 	
 	@Test
-	public void testToJson() throws Exception {
-		getLongAdvancement().toJson();
+	public void testToJson() {
+		createLongAdvancement().toJson();
 	}
 	
 	@Test
-	public void testEquals() throws Exception {
-		Assert.assertEquals(getLongAdvancement(), getLongAdvancement());
+	public void testEquals() {
+		Assert.assertEquals(createLongAdvancement(), createLongAdvancement());
 	}
 	
 	@Test
-	public void testFactory() throws Exception {
+	public void testFactory() {
 		Advancement root = factory.getRoot("test/root", "Root", "Test Advancements", MaterialId.STONE, "blocks/gravel");
 		
 		Advancement manual = new Advancement(new NamespacedKey(plugin, "test/id"), new ItemObject().setItem(MaterialId.BEACON),
@@ -57,7 +57,7 @@ public class AdvancementTest {
 	
 	
 	
-	private Advancement getLongAdvancement() {
+	private Advancement createLongAdvancement() {
 		return new Advancement(new NamespacedKey(plugin, "test/id"), new ItemObject().setItem(Potion.Type.NORMAL.getItem()),
 				new TextComponent("Displayed title"), new TextComponent("Displayed description"))
 				.makeRoot("blocks/gravel", false)

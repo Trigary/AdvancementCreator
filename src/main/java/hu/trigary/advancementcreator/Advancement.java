@@ -13,7 +13,6 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
-import org.bukkit.World;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
@@ -291,17 +290,16 @@ public class Advancement {
 	
 	/**
 	 * Static method, useful when trying to activate a pre-generated (already JSON) advancement.
-	 * @param world the world to activate this advancement in. To automatically use the default world: {@link #activate(boolean, NamespacedKey, String)}
 	 * @param reload whether {@link Bukkit#reloadData()} should be called immediately after a file has been created.
 	 * Calling that method only after all advancements have been activated is advised
 	 * @param id the id of the advancement
 	 * @param json the advancement in JSON format
 	 * @return whether the activation was successful
-	 * @see #activate(World, boolean)
+	 * @see #activate(boolean)
 	 */
-	public static boolean activate(World world, boolean reload, NamespacedKey id, String json) {
-		Validate.notNull(world);
-		File file = new File(world.getWorldFolder(), String.join(File.separator, "data", "advancements", id.getNamespace(), id.getKey()) + ".json");
+	public static boolean activate(boolean reload, NamespacedKey id, String json) {
+		File file = new File(Bukkit.getWorlds().get(0).getWorldFolder(),
+				String.join(File.separator, "data", "advancements", id.getNamespace(), id.getKey()) + ".json");
 		
 		if (!file.exists()) {
 			try {
@@ -327,27 +325,12 @@ public class Advancement {
 	}
 	
 	/**
-	 * Same as calling {@link #activate(World, boolean, NamespacedKey, String)} with the default world
-	 */
-	public static boolean activate(boolean reload, NamespacedKey id, String json) {
-		return activate(Bukkit.getWorlds().get(0), false, id, json);
-	}
-	
-	/**
-	 * @param world the world to activate this advancement in. To automatically use the default world: {@link #activate(boolean)}
 	 * @param reload whether {@link Bukkit#reloadData()} should be called immediately after a file has been created.
 	 * Calling that method only after all advancements have been activated is advised
 	 * @return whether the activation was successful
 	 */
-	public boolean activate(World world, boolean reload) {
-		return activate(world, reload, id, toJson());
-	}
-	
-	/**
-	 * Same as calling {@link #activate(World, boolean)} with the default world
-	 */
 	public boolean activate(boolean reload) {
-		return activate(Bukkit.getWorlds().get(0), false, id, toJson());
+		return activate(reload, id, toJson());
 	}
 	
 	

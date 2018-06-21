@@ -1,6 +1,5 @@
 package hu.trigary.advancementcreator;
 
-import org.jetbrains.annotations.Nullable;
 import hu.trigary.advancementcreator.shared.*;
 import hu.trigary.advancementcreator.trigger.*;
 import hu.trigary.advancementcreator.util.Validator;
@@ -8,9 +7,9 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
-import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.function.Function;
@@ -21,28 +20,20 @@ import java.util.function.Function;
 @SuppressWarnings({"unused", "SameParameterValue"})
 public class AdvancementFactory {
 	private final Plugin plugin;
-	private final @Nullable World autoActivateWorld;
+	private final boolean autoActivate;
 	private final boolean autoReload;
 	
 	/**
 	 * @param plugin the advancements' ids will be created in this plugin's namespace
-	 * @param autoActivateWorld the world to activate the created advancements in. Null disabled automatic activation.
-	 * To automatically use the default world: {@link #AdvancementFactory(Plugin, boolean)}
+	 * @param autoActivate whether the advancement should be automatically activated directly after creation
 	 * @param autoReload whether {@link Bukkit#reloadData()} should be called immediately after an advancement has been created.
-	 * {@code autoActivateWorld} mustn't be null if this is true
+	 * {@code autoActivate} mustn't be false if this is true
 	 */
-	public AdvancementFactory(Plugin plugin, @Nullable World autoActivateWorld, boolean autoReload) {
-		Validate.isTrue(!(autoActivateWorld == null && autoReload), "Auto reload doesn't't work without auto activation.");
+	public AdvancementFactory(Plugin plugin, boolean autoActivate, boolean autoReload) {
+		Validate.isTrue(!(!autoActivate && autoReload), "Auto reload doesn't't work without auto activation.");
 		this.plugin = plugin;
-		this.autoActivateWorld = autoActivateWorld;
+		this.autoActivate = autoActivate;
 		this.autoReload = autoReload;
-	}
-	
-	/**
-	 * Same as calling {@link #AdvancementFactory(Plugin, World, boolean)} with the default world
-	 */
-	public AdvancementFactory(Plugin plugin, boolean autoReload) {
-		this(plugin, Bukkit.getWorlds().get(0), autoReload);
 	}
 	
 	
@@ -1067,8 +1058,8 @@ public class AdvancementFactory {
 		if (parent != null) {
 			advancement.makeChild(parent.getId());
 		}
-		if (autoActivateWorld != null) {
-			advancement.activate(autoActivateWorld, autoReload);
+		if (autoActivate) {
+			advancement.activate(autoReload);
 		}
 	}
 }

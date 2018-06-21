@@ -104,7 +104,9 @@ public class InventoryChangedTrigger extends Trigger {
 	 */
 	public InventoryChangedTrigger removeItem(ItemObject item) {
 		Validate.notNull(item);
-		items.remove(item);
+		if (items != null) {
+			items.remove(item);
+		}
 		return this;
 	}
 	
