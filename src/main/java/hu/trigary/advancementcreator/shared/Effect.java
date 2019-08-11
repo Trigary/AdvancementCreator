@@ -1,10 +1,12 @@
 package hu.trigary.advancementcreator.shared;
 
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
 /**
  * Specifies a status effect.
  * @see EffectObject
  */
-@SuppressWarnings("unused")
 public enum Effect implements SharedEnum {
 	SPEED,
 	SLOWNESS,
@@ -32,8 +34,15 @@ public enum Effect implements SharedEnum {
 	GLOWING,
 	LEVITATION,
 	LUCK,
-	UNLUCK;
+	UNLUCK,
+	SLOW_FALLING,
+	CONDUIT_POWER,
+	DOLPHINS_GRACE,
+	BAD_OMEN,
+	HERO_OF_THE_VILLAGE;
 	
+	@NotNull
+	@Contract(pure = true)
 	@Override
 	public String getValue() {
 		return "minecraft:" + name().toLowerCase();

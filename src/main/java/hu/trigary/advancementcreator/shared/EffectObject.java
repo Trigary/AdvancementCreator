@@ -1,46 +1,55 @@
 package hu.trigary.advancementcreator.shared;
 
 import com.google.gson.JsonObject;
-import org.jetbrains.annotations.Nullable;
 import hu.trigary.advancementcreator.util.JsonBuilder;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Specifies information about a single applied status effect.
  */
-@SuppressWarnings({"unused", "SameParameterValue"})
 public class EffectObject extends SharedObject {
-	private @Nullable RangeObject amplifier = null;
-	private @Nullable RangeObject duration = null;
-	private @Nullable Boolean ambient = null;
-	private @Nullable Boolean visible = null;
+	private RangeObject amplifier;
+	private RangeObject duration;
+	private Boolean ambient;
+	private Boolean visible;
 	
 	
 	
 	/**
 	 * @return the amplifier or null, if none was specified
 	 */
-	public @Nullable RangeObject getAmplifier() {
+	@Nullable
+	@Contract(pure = true)
+	public RangeObject getAmplifier() {
 		return amplifier;
 	}
 	
 	/**
 	 * @return the duration or null, if none was specified
 	 */
-	public @Nullable RangeObject getDuration() {
+	@Nullable
+	@Contract(pure = true)
+	public RangeObject getDuration() {
 		return duration;
 	}
 	
 	/**
 	 * @return whether the effect is ambient or null, if it wasn't specified
 	 */
-	public @Nullable Boolean getAmbient() {
+	@Nullable
+	@Contract(pure = true)
+	public Boolean getAmbient() {
 		return ambient;
 	}
 	
 	/**
 	 * @return whether the effect is visible or null, if it wasn't specified
 	 */
-	public @Nullable Boolean getVisible() {
+	@Nullable
+	@Contract(pure = true)
+	public Boolean getVisible() {
 		return visible;
 	}
 	
@@ -50,6 +59,7 @@ public class EffectObject extends SharedObject {
 	 * @param amplifier the amplifier or null, if it should be cleared
 	 * @return the current effect object for chaining
 	 */
+	@NotNull
 	public EffectObject setAmplifier(@Nullable RangeObject amplifier) {
 		this.amplifier = amplifier;
 		return this;
@@ -59,6 +69,7 @@ public class EffectObject extends SharedObject {
 	 * @param duration the duration or null, if it should be cleared
 	 * @return the current effect object for chaining
 	 */
+	@NotNull
 	public EffectObject setDuration(@Nullable RangeObject duration) {
 		this.duration = duration;
 		return this;
@@ -68,6 +79,7 @@ public class EffectObject extends SharedObject {
 	 * @param ambient whether the effect is ambient or null, if it should be cleared
 	 * @return the current effect object for chaining
 	 */
+	@NotNull
 	public EffectObject setAmbient(@Nullable Boolean ambient) {
 		this.ambient = ambient;
 		return this;
@@ -77,6 +89,7 @@ public class EffectObject extends SharedObject {
 	 * @param visible whether the effect is visible or null, if it should be cleared
 	 * @return the current effect object for chaining
 	 */
+	@NotNull
 	public EffectObject setVisible(@Nullable Boolean visible) {
 		this.visible = visible;
 		return this;
@@ -87,6 +100,8 @@ public class EffectObject extends SharedObject {
 	/**
 	 * @return the JSON representation of the effect object
 	 */
+	@NotNull
+	@Contract(pure = true)
 	@Override
 	public JsonObject toJson() {
 		return new JsonBuilder()

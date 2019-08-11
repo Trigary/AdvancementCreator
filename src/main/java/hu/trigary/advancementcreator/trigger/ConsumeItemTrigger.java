@@ -1,16 +1,17 @@
 package hu.trigary.advancementcreator.trigger;
 
 import com.google.gson.JsonObject;
-import org.jetbrains.annotations.Nullable;
 import hu.trigary.advancementcreator.shared.ItemObject;
 import hu.trigary.advancementcreator.util.JsonBuilder;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Fires whenever the player eats food, drinks milk or a potion/water bottle.
  */
-@SuppressWarnings({"unused", "SameParameterValue"})
 public class ConsumeItemTrigger extends Trigger {
-	private @Nullable ItemObject item = null;
+	private ItemObject item;
 	
 	public ConsumeItemTrigger() {
 		super(Type.CONSUME_ITEM);
@@ -21,7 +22,9 @@ public class ConsumeItemTrigger extends Trigger {
 	/**
 	 * @return information about the item before it was consumed or null, if none was specified
 	 */
-	public @Nullable ItemObject getItem() {
+	@Nullable
+	@Contract(pure = true)
+	public ItemObject getItem() {
 		return item;
 	}
 	
@@ -29,6 +32,7 @@ public class ConsumeItemTrigger extends Trigger {
 	 * @param item information about the item before it was consumed or null, if it should be cleared
 	 * @return the current trigger for chaining
 	 */
+	@NotNull
 	public ConsumeItemTrigger setItem(@Nullable ItemObject item) {
 		this.item = item;
 		return this;
@@ -36,9 +40,11 @@ public class ConsumeItemTrigger extends Trigger {
 	
 	
 	
+	@NotNull
+	@Contract(pure = true)
 	@Override
 	protected JsonObject getConditions() {
-		return item == null ? null : new JsonBuilder()
+		return new JsonBuilder()
 				.add("item", item)
 				.build();
 	}

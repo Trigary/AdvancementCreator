@@ -1,16 +1,17 @@
 package hu.trigary.advancementcreator.trigger;
 
 import com.google.gson.JsonObject;
-import org.jetbrains.annotations.Nullable;
 import hu.trigary.advancementcreator.shared.Potion;
 import hu.trigary.advancementcreator.util.JsonBuilder;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Fires whenever any (!) item is taken out of the output of a brewing stand.
  */
-@SuppressWarnings({"unused", "SameParameterValue"})
 public class BrewedPotionTrigger extends Trigger {
-	private @Nullable Potion potion = null;
+	private Potion potion;
 	
 	public BrewedPotionTrigger() {
 		super(Type.BREWED_POTION);
@@ -21,7 +22,9 @@ public class BrewedPotionTrigger extends Trigger {
 	/**
 	 * @return the taken out item's potion identifier or null, if none was specified. If the item is not a potion, it's id is {@link Potion#EMPTY}
 	 */
-	public @Nullable Potion getPotion() {
+	@Nullable
+	@Contract(pure = true)
+	public Potion getPotion() {
 		return potion;
 	}
 	
@@ -29,6 +32,7 @@ public class BrewedPotionTrigger extends Trigger {
 	 * @param potion the taken out item's potion identifier or null, if it should be cleared. If the item is not a potion, it's id is {@link Potion#EMPTY}
 	 * @return the current trigger for chaining
 	 */
+	@NotNull
 	public BrewedPotionTrigger setPotion(@Nullable Potion potion) {
 		this.potion = potion;
 		return this;
@@ -36,9 +40,11 @@ public class BrewedPotionTrigger extends Trigger {
 	
 	
 	
+	@NotNull
+	@Contract(pure = true)
 	@Override
 	protected JsonObject getConditions() {
-		return potion == null ? null : new JsonBuilder()
+		return new JsonBuilder()
 				.add("potion", potion)
 				.build();
 	}

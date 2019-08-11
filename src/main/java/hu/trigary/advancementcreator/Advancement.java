@@ -2,8 +2,8 @@ package hu.trigary.advancementcreator;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
 import hu.trigary.advancementcreator.shared.ItemObject;
 import hu.trigary.advancementcreator.trigger.LocationTrigger;
 import hu.trigary.advancementcreator.trigger.Trigger;
@@ -13,6 +13,8 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
@@ -24,31 +26,32 @@ import java.util.logging.Level;
  * A configurable advancement which later may be saved to a file, loaded into the server.
  * Visit <a href="https://github.com/skylinerw/guides/blob/master/java/advancements.md">this link</a> for further information regarding advancements.
  */
-@SuppressWarnings({"unused", "SameParameterValue"})
 public class Advancement {
 	private final NamespacedKey id;
 	private final ItemObject icon;
 	private final TextComponent title;
 	private final TextComponent description;
 	private final Map<String, Trigger> triggers = new HashMap<>();
-	private @Nullable Set<String[]> requirements = null;
-	private @Nullable NamespacedKey parent = null;
-	private @Nullable String background = null;
-	private @Nullable Rewards rewards;
+	private Set<String[]> requirements;
+	private NamespacedKey parent;
+	private String background;
+	private Rewards rewards;
 	private Frame frame = Frame.TASK;
 	private boolean toast = true;
 	private boolean announce = true;
-	private boolean hidden = false;
+	private boolean hidden;
 	
 	/**
 	 * Creates a new configurable advancement.
+	 *
 	 * @param id the id of the advancement, this determines the file location and the in-game id
 	 * @param icon the item to display on the advancement screen. The root advancement's icon is the icon of the tab.
 	 * The item property must be set before calling {@link #toJson()}, the data property is optional
 	 * @param title the title of the advancement
 	 * @param description the description of the advancement
 	 */
-	public Advancement(NamespacedKey id, ItemObject icon, TextComponent title, TextComponent description) {
+	public Advancement(@NotNull NamespacedKey id, @NotNull ItemObject icon,
+			@NotNull TextComponent title, @NotNull TextComponent description) {
 		Validate.notNull(id);
 		Validate.notNull(icon);
 		Validate.notNull(title);
@@ -64,6 +67,8 @@ public class Advancement {
 	/**
 	 * @return the id
 	 */
+	@NotNull
+	@Contract(pure = true)
 	public NamespacedKey getId() {
 		return id;
 	}
@@ -71,6 +76,8 @@ public class Advancement {
 	/**
 	 * @return the (mutable) icon
 	 */
+	@NotNull
+	@Contract(pure = true)
 	public ItemObject getIcon() {
 		return icon;
 	}
@@ -78,6 +85,8 @@ public class Advancement {
 	/**
 	 * @return the (mutable) title
 	 */
+	@NotNull
+	@Contract(pure = true)
 	public TextComponent getTitle() {
 		return title;
 	}
@@ -85,6 +94,8 @@ public class Advancement {
 	/**
 	 * @return the (mutable) description
 	 */
+	@NotNull
+	@Contract(pure = true)
 	public TextComponent getDescription() {
 		return description;
 	}
@@ -92,6 +103,8 @@ public class Advancement {
 	/**
 	 * @return an unmodifiable view of the triggers
 	 */
+	@NotNull
+	@Contract(pure = true)
 	public Set<Map.Entry<String, Trigger>> getTriggers() {
 		return Collections.unmodifiableSet(triggers.entrySet());
 	}
@@ -100,6 +113,8 @@ public class Advancement {
 	 * @return an unmodifiable view of the requirements, which are in conjunctive normal form
 	 * (the arrays' elements are separated by logical ORs and the arrays are separated by logical ANDs)
 	 */
+	@NotNull
+	@Contract(pure = true)
 	public Set<String[]> getRequirements() {
 		return requirements == null ? Collections.emptySet() : Collections.unmodifiableSet(requirements);
 	}
@@ -107,27 +122,35 @@ public class Advancement {
 	/**
 	 * @return the parent advancement's id or null, if this advancement is a root advancement
 	 */
-	public @Nullable NamespacedKey getParent() {
+	@Nullable
+	@Contract(pure = true)
+	public NamespacedKey getParent() {
 		return parent;
 	}
 	
 	/**
 	 * @return the background of this root advancement or null, if this advancement is not a root or has no background set
 	 */
-	public @Nullable String getBackground() {
+	@Nullable
+	@Contract(pure = true)
+	public String getBackground() {
 		return background;
 	}
 	
 	/**
 	 * @return the (mutable) rewards given upon completing this advancement or null, if none has been specified
 	 */
-	public @Nullable Rewards getRewards() {
+	@Nullable
+	@Contract(pure = true)
+	public Rewards getRewards() {
 		return rewards;
 	}
 	
 	/**
 	 * @return the frame style. {@link Frame#TASK} by default
 	 */
+	@NotNull
+	@Contract(pure = true)
 	public Frame getFrame() {
 		return frame;
 	}
@@ -135,6 +158,7 @@ public class Advancement {
 	/**
 	 * @return whether the advancement should show a popup notification upon completion. True by default
 	 */
+	@Contract(pure = true)
 	public boolean isToast() {
 		return toast;
 	}
@@ -142,6 +166,7 @@ public class Advancement {
 	/**
 	 * @return whether the completion of this advancement should be announced in the chat. True by default
 	 */
+	@Contract(pure = true)
 	public boolean isAnnounce() {
 		return announce;
 	}
@@ -149,6 +174,7 @@ public class Advancement {
 	/**
 	 * @return whether child advancement should be hidden until this advancement is completed. False by default
 	 */
+	@Contract(pure = true)
 	public boolean isHidden() {
 		return hidden;
 	}
@@ -160,7 +186,8 @@ public class Advancement {
 	 * @param trigger any extension of {@link Trigger}
 	 * @return the current advancement for chaining
 	 */
-	public Advancement addTrigger(String id, Trigger trigger) {
+	@NotNull
+	public Advancement addTrigger(@NotNull String id, @NotNull Trigger trigger) {
 		Validate.notNull(id);
 		Validate.notNull(trigger);
 		triggers.put(id, trigger);
@@ -171,7 +198,8 @@ public class Advancement {
 	 * @param id the id of the trigger which should be removed
 	 * @return the current advancement for chaining
 	 */
-	public Advancement removeTrigger(String id) {
+	@NotNull
+	public Advancement removeTrigger(@NotNull String id) {
 		Validate.notNull(id);
 		triggers.remove(id);
 		return this;
@@ -182,7 +210,8 @@ public class Advancement {
 	 * The vararg array is not cloned, allowing mutability
 	 * @return the current advancement for chaining
 	 */
-	public Advancement addRequirement(String... requirement) {
+	@NotNull
+	public Advancement addRequirement(@NotNull String... requirement) {
 		Validate.notNull(requirement);
 		if (requirements == null) {
 			requirements = new HashSet<>();
@@ -192,10 +221,11 @@ public class Advancement {
 	}
 	
 	/**
-	 * @param requirement the array of requirements to remove. Only the contents of the arrays have to be equal
+	 * @param requirement the array of requirements to remove. The contents of the arrays have to be equal
 	 * @return the current advancement for chaining
 	 */
-	public Advancement removeRequirement(String... requirement) {
+	@NotNull
+	public Advancement removeRequirement(@NotNull String... requirement) {
 		Validate.notNull(requirement);
 		if (requirements == null) {
 			return this;
@@ -213,6 +243,7 @@ public class Advancement {
 	 * @param rewards the rewards which should be given upon completion of this advancement or null, if it should be cleared
 	 * @return the current advancement for chaining
 	 */
+	@NotNull
 	public Advancement setRewards(@Nullable Rewards rewards) {
 		this.rewards = rewards;
 		return this;
@@ -222,7 +253,8 @@ public class Advancement {
 	 * @param frame the new frame style. {@link Frame#TASK} by default
 	 * @return the current advancement for chaining
 	 */
-	public Advancement setFrame(Frame frame) {
+	@NotNull
+	public Advancement setFrame(@NotNull Frame frame) {
 		Validate.notNull(frame);
 		this.frame = frame;
 		return this;
@@ -232,6 +264,7 @@ public class Advancement {
 	 * @param toast whether the advancement should show a popup notification upon completion. True by default
 	 * @return the current advancement for chaining
 	 */
+	@NotNull
 	public Advancement setToast(boolean toast) {
 		this.toast = toast;
 		return this;
@@ -241,6 +274,7 @@ public class Advancement {
 	 * @param announce whether the completion of this advancement should be announced in the chat. True by default
 	 * @return the current advancement for chaining
 	 */
+	@NotNull
 	public Advancement setAnnounce(boolean announce) {
 		this.announce = announce;
 		return this;
@@ -250,6 +284,7 @@ public class Advancement {
 	 * @param hidden whether child advancement should be hidden until this advancement is completed. False by default
 	 * @return the current advancement for chaining
 	 */
+	@NotNull
 	public Advancement setHidden(boolean hidden) {
 		this.hidden = hidden;
 		return this;
@@ -290,6 +325,7 @@ public class Advancement {
 	
 	/**
 	 * Static method, useful when trying to activate a pre-generated (already JSON) advancement.
+	 *
 	 * @param reload whether {@link Bukkit#reloadData()} should be called immediately after a file has been created.
 	 * Calling that method only after all advancements have been activated is advised
 	 * @param id the id of the advancement
@@ -338,6 +374,7 @@ public class Advancement {
 	/**
 	 * Creates a JSON representation of the current advancement. This method is only useful when {@link #activate(boolean)} is not appropriate.
 	 * The icon, the triggers and the requirements are validated when this is called.
+	 *
 	 * @return the JSON representation of the current advancement
 	 */
 	public String toJson() {
@@ -366,12 +403,17 @@ public class Advancement {
 		json.add("criteria", criteria);
 		
 		if (requirements != null && !requirements.isEmpty()) {
+			JsonArray jsonArray = new JsonArray();
 			for (String[] array : requirements) {
+				JsonArray temp = new JsonArray();
 				for (String string : array) {
-					Validate.isTrue(triggers.containsKey(string), "The " + string + " trigger doesn't exist in advancement: ", id);
+					Validate.isTrue(triggers.containsKey(string),
+							"The " + string + " trigger doesn't exist in advancement: ", id);
+					temp.add(string);
 				}
+				jsonArray.add(temp);
 			}
-			json.add("requirements", JsonBuilder.GSON.toJsonTree(requirements, new TypeToken<Set<String[]>>() {}.getType()));
+			json.add("requirements", jsonArray);
 		}
 		
 		if (rewards != null) {
@@ -390,6 +432,7 @@ public class Advancement {
 	/**
 	 * @return the hash code of this advancement
 	 */
+	@Contract(pure = true)
 	@Override
 	public int hashCode() {
 		return Objects.hash(id, icon, title, description, triggers, requirements, parent, background, rewards, frame, toast, announce, hidden);
@@ -399,18 +442,19 @@ public class Advancement {
 	 * @param object the reference object with which to compare
 	 * @return whether this object has the same content as the passed parameter
 	 */
+	@Contract(pure = true, value = "null -> false")
 	@Override
-	public boolean equals(Object object) {
+	public boolean equals(@Nullable Object object) {
 		if (!(object instanceof Advancement)) {
 			return false;
 		}
 		
-		Advancement adv = (Advancement)object;
-		if (!(Objects.equals(adv.id, id) && Objects.equals(adv.icon, icon) && Objects.equals(adv.title.toLegacyText(), title.toLegacyText()) &&
-				Objects.equals(adv.description.toLegacyText(), description.toLegacyText()) && Objects.equals(adv.triggers, triggers) &&
-				Objects.equals(adv.parent, parent) && Objects.equals(adv.background, background) && Objects.equals(adv.rewards, rewards) &&
-				Objects.equals(adv.frame, frame) && Objects.equals(adv.toast, toast) && Objects.equals(adv.announce, announce) &&
-				Objects.equals(adv.hidden, hidden))) {
+		Advancement adv = (Advancement) object;
+		if (!(adv.id.equals(id) && adv.icon.equals(icon) && adv.title.toLegacyText().equals(title.toLegacyText()) &&
+				adv.description.toLegacyText().equals(description.toLegacyText()) && adv.triggers.equals(triggers) &&
+				Objects.equals(adv.parent, parent) && Objects.equals(adv.background, background) &&
+				Objects.equals(adv.rewards, rewards) && adv.frame == frame && adv.toast == toast &&
+				adv.announce == announce && adv.hidden == hidden)) {
 			return false;
 		}
 		

@@ -1,10 +1,12 @@
 package hu.trigary.advancementcreator.trigger;
 
 import com.google.gson.JsonObject;
-import org.jetbrains.annotations.Nullable;
 import hu.trigary.advancementcreator.shared.SharedEnum;
 import hu.trigary.advancementcreator.util.JsonBuilder;
 import org.apache.commons.lang.Validate;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
@@ -18,7 +20,7 @@ public abstract class Trigger {
 	/**
 	 * @param type the of the trigger
 	 */
-	protected Trigger(Type type) {
+	protected Trigger(@NotNull Type type) {
 		Validate.notNull(type);
 		this.type = type;
 	}
@@ -28,6 +30,8 @@ public abstract class Trigger {
 	/**
 	 * @return the type of the trigger
 	 */
+	@NotNull
+	@Contract(pure = true)
 	public Type getType() {
 		return type;
 	}
@@ -35,7 +39,9 @@ public abstract class Trigger {
 	/**
 	 * @return a JSON representation of the trigger
 	 */
-	public JsonObject toJson() {
+	@NotNull
+	@Contract(pure = true)
+	public final JsonObject toJson() {
 		return new JsonBuilder()
 				.add("trigger", type.getValue())
 				.add("conditions", getConditions())
@@ -43,33 +49,39 @@ public abstract class Trigger {
 	}
 	
 	/**
-	 * @return a JSON representation of the conditions of the trigger or null, if none was specified
+	 * @return a JSON representation of the conditions of the trigger
 	 */
-	protected abstract @Nullable JsonObject getConditions();
+	@NotNull
+	@Contract(pure = true)
+	protected abstract JsonObject getConditions();
 	
 	
 	
 	/**
 	 * This method should be used wisely, since it calls {@link #getConditions()}
+	 *
 	 * @return the hash code of this trigger
 	 */
 	@Override
+	@Contract(pure = true)
 	public int hashCode() {
 		return Objects.hash(type, getConditions());
 	}
 	
 	/**
 	 * This method should be used wisely, since it calls {@link #getConditions()}
+	 *
 	 * @param object the reference object with which to compare
 	 * @return whether this object has the same content as the passed parameter
 	 */
 	@Override
-	public boolean equals(Object object) {
+	@Contract(pure = true, value = "null -> false")
+	public boolean equals(@Nullable Object object) {
 		if (!(object instanceof Trigger)) {
 			return false;
 		}
 		
-		Trigger trigger = (Trigger)object;
+		Trigger trigger = (Trigger) object;
 		return trigger.type == type && Objects.equals(trigger.getConditions(), getConditions());
 	}
 	
@@ -82,6 +94,7 @@ public abstract class Trigger {
 		BRED_ANIMALS,
 		BREWED_POTION,
 		CHANGED_DIMENSION,
+		CHANNELED_LIGHTNING,
 		CONSTRUCT_BEACON,
 		CONSUME_ITEM,
 		CURED_ZOMBIE_VILLAGER,
@@ -90,9 +103,13 @@ public abstract class Trigger {
 		ENTER_BLOCK,
 		ENTITY_HURT_PLAYER,
 		ENTITY_KILLED_PLAYER,
+		FILLED_BUCKET,
+		FISHING_ROD_HOOKED,
+		HERO_OF_THE_VILLAGE,
 		IMPOSSIBLE,
 		INVENTORY_CHANGED,
 		ITEM_DURABILITY_CHANGED,
+		KILLED_BY_CROSSBOW,
 		LEVITATION,
 		LOCATION,
 		NETHER_TRAVEL,
@@ -100,14 +117,18 @@ public abstract class Trigger {
 		PLAYER_HURT_ENTITY,
 		PLAYER_KILLED_ENTITY,
 		RECIPE_UNLOCKED,
+		SHOT_CROSSBOW,
 		SLEPT_IN_BED,
 		SUMMONED_ENTITY,
 		TAME_ANIMAL,
 		TICK,
 		USED_ENDER_EYE,
 		USED_TOTEM,
-		VILLAGER_TRADE;
+		VILLAGER_TRADE,
+		VOLUNTARY_EXILE;
 		
+		@NotNull
+		@Contract(pure = true)
 		@Override
 		public String getValue() {
 			return "minecraft:" + name().toLowerCase();

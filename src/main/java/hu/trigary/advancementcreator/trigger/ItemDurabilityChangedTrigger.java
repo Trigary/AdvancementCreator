@@ -1,19 +1,20 @@
 package hu.trigary.advancementcreator.trigger;
 
 import com.google.gson.JsonObject;
-import org.jetbrains.annotations.Nullable;
 import hu.trigary.advancementcreator.shared.ItemObject;
 import hu.trigary.advancementcreator.shared.RangeObject;
 import hu.trigary.advancementcreator.util.JsonBuilder;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Fires whenever any item's durability in the player's inventory changes.
  */
-@SuppressWarnings({"unused", "SameParameterValue"})
 public class ItemDurabilityChangedTrigger extends Trigger {
-	private @Nullable ItemObject item = null;
-	private @Nullable RangeObject durability = null;
-	private @Nullable RangeObject delta = null;
+	private ItemObject item;
+	private RangeObject durability;
+	private RangeObject delta;
 	
 	public ItemDurabilityChangedTrigger() {
 		super(Type.ITEM_DURABILITY_CHANGED);
@@ -24,21 +25,27 @@ public class ItemDurabilityChangedTrigger extends Trigger {
 	/**
 	 * @return the item which's durability changed or null, if none was specified
 	 */
-	public @Nullable ItemObject getItem() {
+	@Nullable
+	@Contract(pure = true)
+	public ItemObject getItem() {
 		return item;
 	}
 	
 	/**
 	 * @return the durability or null, if none was specified
 	 */
-	public @Nullable RangeObject getDurability() {
+	@Nullable
+	@Contract(pure = true)
+	public RangeObject getDurability() {
 		return durability;
 	}
 	
 	/**
 	 * @return the durability change or null, if none was specified. The durability change is calculated by {@code new - old}
 	 */
-	public @Nullable RangeObject getDelta() {
+	@Nullable
+	@Contract(pure = true)
+	public RangeObject getDelta() {
 		return delta;
 	}
 	
@@ -48,6 +55,7 @@ public class ItemDurabilityChangedTrigger extends Trigger {
 	 * @param item the item which's durability changed or null, if it should be cleared
 	 * @return the current trigger for chaining
 	 */
+	@NotNull
 	public ItemDurabilityChangedTrigger setItem(@Nullable ItemObject item) {
 		this.item = item;
 		return this;
@@ -57,6 +65,7 @@ public class ItemDurabilityChangedTrigger extends Trigger {
 	 * @param durability the new durability or null, if it should be cleared
 	 * @return the current trigger for chaining
 	 */
+	@NotNull
 	public ItemDurabilityChangedTrigger setDurability(@Nullable RangeObject durability) {
 		this.durability = durability;
 		return this;
@@ -66,6 +75,7 @@ public class ItemDurabilityChangedTrigger extends Trigger {
 	 * @param delta the durability change or null, if it should be cleared. The durability change is calculated by {@code new - old}
 	 * @return the current trigger for chaining
 	 */
+	@NotNull
 	public ItemDurabilityChangedTrigger setDelta(@Nullable RangeObject delta) {
 		this.delta = delta;
 		return this;
@@ -73,9 +83,11 @@ public class ItemDurabilityChangedTrigger extends Trigger {
 	
 	
 	
+	@NotNull
+	@Contract(pure = true)
 	@Override
 	protected JsonObject getConditions() {
-		return item == null && durability == null && delta == null ? null : new JsonBuilder()
+		return new JsonBuilder()
 				.add("item", item)
 				.add("durability", durability)
 				.add("delta", delta)

@@ -1,16 +1,17 @@
 package hu.trigary.advancementcreator.trigger;
 
 import com.google.gson.JsonObject;
-import org.jetbrains.annotations.Nullable;
 import hu.trigary.advancementcreator.shared.EntityObject;
 import hu.trigary.advancementcreator.util.JsonBuilder;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Fires whenever the player tames an animal.
  */
-@SuppressWarnings({"unused", "SameParameterValue"})
 public class TameAnimalTrigger extends Trigger {
-	@Nullable EntityObject entity = null;
+	private EntityObject entity;
 	
 	public TameAnimalTrigger() {
 		super(Type.TAME_ANIMAL);
@@ -21,7 +22,9 @@ public class TameAnimalTrigger extends Trigger {
 	/**
 	 * @return information about the tamed entity or null, if none was specified
 	 */
-	public @Nullable EntityObject getEntity() {
+	@Nullable
+	@Contract(pure = true)
+	public EntityObject getEntity() {
 		return entity;
 	}
 	
@@ -29,6 +32,7 @@ public class TameAnimalTrigger extends Trigger {
 	 * @param entity information about the tamed entity or null, if it should be cleared
 	 * @return the current trigger for chaining
 	 */
+	@NotNull
 	public TameAnimalTrigger setEntity(@Nullable EntityObject entity) {
 		this.entity = entity;
 		return this;
@@ -36,9 +40,11 @@ public class TameAnimalTrigger extends Trigger {
 	
 	
 	
+	@NotNull
+	@Contract(pure = true)
 	@Override
 	protected JsonObject getConditions() {
-		return entity == null ? null : new JsonBuilder()
+		return new JsonBuilder()
 				.add("entity", entity)
 				.build();
 	}

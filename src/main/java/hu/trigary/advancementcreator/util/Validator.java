@@ -1,19 +1,20 @@
 package hu.trigary.advancementcreator.util;
 
 import org.apache.commons.lang.Validate;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * Validation utility, used internally.
  */
 public class Validator {
-	public static void noNamespace(String id) {
+	public static void noNamespace(@NotNull String id) {
 		Validate.notNull(id);
 		Validate.isTrue(!id.contains(":"), "The id parameter must not contain namespaces: ", id);
 		Validate.isTrue(!id.contains(" "), "The id parameter must not contain spaces: ", id);
 	}
 	
-	public static void texture(String texture) {
+	public static void texture(@NotNull String texture) {
 		Validate.notNull(texture);
 		Validate.isTrue(!texture.contains(":"), "Texture parameter must not contain namespace: ", texture);
 		Validate.isTrue(!texture.startsWith("textures/"), "Texture parameter must not include root directory (/textures): ", texture);

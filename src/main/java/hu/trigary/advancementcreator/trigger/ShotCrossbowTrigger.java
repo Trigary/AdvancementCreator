@@ -8,19 +8,19 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Fires whenever the player uses a Totem of Undying.
+ * Fires when a player fires a crossbow.
  */
-public class UsedTotemTrigger extends Trigger {
+public class ShotCrossbowTrigger extends Trigger {
 	private ItemObject item;
 	
-	public UsedTotemTrigger() {
-		super(Type.USED_TOTEM);
+	public ShotCrossbowTrigger() {
+		super(Type.SHOT_CROSSBOW);
 	}
 	
 	
 	
 	/**
-	 * @return information about the item before it was consumed or null, if none was specified
+	 * @return the crossbow before the projectile was fired or null, if none was specified
 	 */
 	@Nullable
 	@Contract(pure = true)
@@ -29,11 +29,11 @@ public class UsedTotemTrigger extends Trigger {
 	}
 	
 	/**
-	 * @param item information about the item before it was consumed or null, if it should be cleared
+	 * @param item the crossbow before the projectile was fired or null, if it should be cleared
 	 * @return the current trigger for chaining
 	 */
 	@NotNull
-	public UsedTotemTrigger setItem(@Nullable ItemObject item) {
+	public ShotCrossbowTrigger setItem(@Nullable ItemObject item) {
 		this.item = item;
 		return this;
 	}

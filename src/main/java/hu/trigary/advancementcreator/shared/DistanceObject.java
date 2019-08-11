@@ -1,55 +1,66 @@
 package hu.trigary.advancementcreator.shared;
 
 import com.google.gson.JsonObject;
-import org.jetbrains.annotations.Nullable;
 import hu.trigary.advancementcreator.util.JsonBuilder;
 import org.apache.commons.lang.Validate;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Specifies information about a distance between two points.
  */
-@SuppressWarnings({"unused", "SameParameterValue"})
 public class DistanceObject extends SharedObject {
-	private @Nullable RangeObject x = null;
-	private @Nullable RangeObject y = null;
-	private @Nullable RangeObject z = null;
-	private @Nullable RangeObject absolute = null;
-	private @Nullable RangeObject horizontal = null;
+	private RangeObject x;
+	private RangeObject y;
+	private RangeObject z;
+	private RangeObject absolute;
+	private RangeObject horizontal;
 	
 	
 	
 	/**
 	 * @return the distance on the x axis
 	 */
-	public @Nullable RangeObject getX() {
+	@Nullable
+	@Contract(pure = true)
+	public RangeObject getX() {
 		return x;
 	}
 	
 	/**
 	 * @return the distance on the y axis
 	 */
-	public @Nullable RangeObject getY() {
+	@Nullable
+	@Contract(pure = true)
+	public RangeObject getY() {
 		return y;
 	}
 	
 	/**
 	 * @return the distance on the z axis
 	 */
-	public @Nullable RangeObject getZ() {
+	@Nullable
+	@Contract(pure = true)
+	public RangeObject getZ() {
 		return z;
 	}
 	
 	/**
 	 * @return the distance on all axises
 	 */
-	public @Nullable RangeObject getAbsolute() {
+	@Nullable
+	@Contract(pure = true)
+	public RangeObject getAbsolute() {
 		return absolute;
 	}
 	
 	/**
 	 * @return the distance on the horizontal axises
 	 */
-	public @Nullable RangeObject getHorizontal() {
+	@Nullable
+	@Contract(pure = true)
+	public RangeObject getHorizontal() {
 		return horizontal;
 	}
 	
@@ -59,6 +70,7 @@ public class DistanceObject extends SharedObject {
 	 * @param x the distance on the x axis or null, if it should be cleared
 	 * @return the current distance object for chaining
 	 */
+	@NotNull
 	public DistanceObject setX(@Nullable RangeObject x) {
 		this.x = x;
 		return this;
@@ -68,6 +80,7 @@ public class DistanceObject extends SharedObject {
 	 * @param y the distance on the y axis or null, if it should be cleared
 	 * @return the current distance object for chaining
 	 */
+	@NotNull
 	public DistanceObject setY(@Nullable RangeObject y) {
 		this.y = y;
 		return this;
@@ -77,6 +90,7 @@ public class DistanceObject extends SharedObject {
 	 * @param z the distance on the z axis or null, if it should be cleared
 	 * @return the current distance object for chaining
 	 */
+	@NotNull
 	public DistanceObject setZ(@Nullable RangeObject z) {
 		this.z = z;
 		return this;
@@ -86,6 +100,7 @@ public class DistanceObject extends SharedObject {
 	 * @param absolute the distance on all axises or null, if it should be cleared
 	 * @return the current distance object for chaining
 	 */
+	@NotNull
 	public DistanceObject setAbsolute(@Nullable RangeObject absolute) {
 		this.absolute = absolute;
 		return this;
@@ -95,6 +110,7 @@ public class DistanceObject extends SharedObject {
 	 * @param horizontal the distance on the horizontal axises or null, if it should be cleared
 	 * @return the current distance object for chaining
 	 */
+	@NotNull
 	public DistanceObject setHorizontal(@Nullable RangeObject horizontal) {
 		this.horizontal = horizontal;
 		return this;
@@ -105,12 +121,15 @@ public class DistanceObject extends SharedObject {
 	/**
 	 * @return the JSON representation of the distance object
 	 */
+	@NotNull
+	@Contract(pure = true)
 	@Override
 	public JsonObject toJson() {
 		boolean singleNotNull = x != null || y != null || z != null;
-		Validate.isTrue((absolute == null && horizontal == null) || (absolute == null && !singleNotNull) || (horizontal == null && !singleNotNull),
+		Validate.isTrue((absolute == null && horizontal == null)
+						|| (absolute == null && !singleNotNull)
+						|| (horizontal == null && !singleNotNull),
 				"Only one of the three options (x/y/z, absolute, horizontal) can be specified.");
-		
 		return new JsonBuilder()
 				.add("x", x)
 				.add("y", y)

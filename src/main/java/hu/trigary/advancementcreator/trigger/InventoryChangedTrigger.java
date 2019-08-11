@@ -1,12 +1,14 @@
 package hu.trigary.advancementcreator.trigger;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import org.jetbrains.annotations.Nullable;
 import hu.trigary.advancementcreator.shared.ItemObject;
 import hu.trigary.advancementcreator.shared.RangeObject;
+import hu.trigary.advancementcreator.shared.SharedObject;
 import hu.trigary.advancementcreator.util.JsonBuilder;
 import org.apache.commons.lang.Validate;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -15,12 +17,11 @@ import java.util.Set;
 /**
  * Fires whenever items are added to or removed from the player's inventory.
  */
-@SuppressWarnings({"unused", "SameParameterValue"})
 public class InventoryChangedTrigger extends Trigger {
-	private @Nullable RangeObject occupied = null;
-	private @Nullable RangeObject full = null;
-	private @Nullable RangeObject empty = null;
-	private @Nullable Set<ItemObject> items = null;
+	private RangeObject occupied;
+	private RangeObject full;
+	private RangeObject empty;
+	private Set<ItemObject> items;
 	
 	public InventoryChangedTrigger() {
 		super(Type.INVENTORY_CHANGED);
@@ -31,27 +32,35 @@ public class InventoryChangedTrigger extends Trigger {
 	/**
 	 * @return the amount of slots which have items in them or null, if none was specified
 	 */
-	public @Nullable RangeObject getOccupied() {
+	@Nullable
+	@Contract(pure = true)
+	public RangeObject getOccupied() {
 		return occupied;
 	}
 	
 	/**
 	 * @return the amount of slots which have full stacks of items in them or null, if none was specified
 	 */
-	public @Nullable RangeObject getFull() {
+	@Nullable
+	@Contract(pure = true)
+	public RangeObject getFull() {
 		return full;
 	}
 	
 	/**
 	 * @return the amount of slots which have no items in them or null, if none was specified
 	 */
-	public @Nullable RangeObject getEmpty() {
+	@Nullable
+	@Contract(pure = true)
+	public RangeObject getEmpty() {
 		return empty;
 	}
 	
 	/**
 	 * @return items which the inventory contains
 	 */
+	@NotNull
+	@Contract(pure = true)
 	public Set<ItemObject> getItems() {
 		return items == null ? Collections.emptySet() : Collections.unmodifiableSet(items);
 	}
@@ -62,6 +71,7 @@ public class InventoryChangedTrigger extends Trigger {
 	 * @param occupied the amount of slots which have items in them or null, if it should be cleared
 	 * @return the current trigger for chaining
 	 */
+	@NotNull
 	public InventoryChangedTrigger setOccupied(@Nullable RangeObject occupied) {
 		this.occupied = occupied;
 		return this;
@@ -71,6 +81,7 @@ public class InventoryChangedTrigger extends Trigger {
 	 * @param full the amount of slots which have full stacks of items in them or null, if it should be cleared
 	 * @return the current trigger for chaining
 	 */
+	@NotNull
 	public InventoryChangedTrigger setFull(@Nullable RangeObject full) {
 		this.full = full;
 		return this;
@@ -80,6 +91,7 @@ public class InventoryChangedTrigger extends Trigger {
 	 * @param empty the amount of slots which have no items in them or null, if it should be cleared
 	 * @return the current trigger for chaining
 	 */
+	@NotNull
 	public InventoryChangedTrigger setEmpty(@Nullable RangeObject empty) {
 		this.empty = empty;
 		return this;
@@ -89,7 +101,8 @@ public class InventoryChangedTrigger extends Trigger {
 	 * @param item the item to add to the list of items which the inventory contains
 	 * @return the current trigger for chaining
 	 */
-	public InventoryChangedTrigger addItem(ItemObject item) {
+	@NotNull
+	public InventoryChangedTrigger addItem(@NotNull ItemObject item) {
 		Validate.notNull(item);
 		if (items == null) {
 			items = new HashSet<>();
@@ -102,7 +115,8 @@ public class InventoryChangedTrigger extends Trigger {
 	 * @param item the item to removed from the list of items which the inventory contains
 	 * @return the current trigger for chaining
 	 */
-	public InventoryChangedTrigger removeItem(ItemObject item) {
+	@NotNull
+	public InventoryChangedTrigger removeItem(@NotNull ItemObject item) {
 		Validate.notNull(item);
 		if (items != null) {
 			items.remove(item);
@@ -112,12 +126,11 @@ public class InventoryChangedTrigger extends Trigger {
 	
 	
 	
+	@NotNull
+	@Contract(pure = true)
 	@Override
 	protected JsonObject getConditions() {
-		if (occupied == null && full == null && empty == null && (items == null || items.isEmpty())) {
-			return null;
-		}
-		JsonObject json = new JsonObject();
+		JsonBuilder json = new JsonBuilder();
 		if (occupied != null || full != null || empty != null) {
 			json.add("slots", new JsonBuilder()
 					.add("occupied", occupied)
@@ -125,13 +138,8 @@ public class InventoryChangedTrigger extends Trigger {
 					.add("empty", empty)
 					.build());
 		}
-		if (items != null && !items.isEmpty()) {
-			JsonArray items = new JsonArray();
-			for (ItemObject item : this.items) {
-				items.add(item.toJson());
-			}
-			json.add("items", items);
-		}
-		return json;
+		
+		return json.add("items", items, SharedObject::toJson)
+				.build();
 	}
 }

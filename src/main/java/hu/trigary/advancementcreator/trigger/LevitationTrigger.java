@@ -1,18 +1,19 @@
 package hu.trigary.advancementcreator.trigger;
 
 import com.google.gson.JsonObject;
-import org.jetbrains.annotations.Nullable;
 import hu.trigary.advancementcreator.shared.DistanceObject;
 import hu.trigary.advancementcreator.shared.RangeObject;
 import hu.trigary.advancementcreator.util.JsonBuilder;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Fires whenever the player is under the levitation status effect.
  */
-@SuppressWarnings({"unused", "SameParameterValue"})
 public class LevitationTrigger extends Trigger {
-	private @Nullable RangeObject duration = null;
-	private @Nullable DistanceObject distance = null;
+	private RangeObject duration;
+	private DistanceObject distance;
 	
 	public LevitationTrigger() {
 		super(Type.LEVITATION);
@@ -23,14 +24,18 @@ public class LevitationTrigger extends Trigger {
 	/**
 	 * @return the duration or null, if none was specified
 	 */
-	public @Nullable RangeObject getDuration() {
+	@Nullable
+	@Contract(pure = true)
+	public RangeObject getDuration() {
 		return duration;
 	}
 	
 	/**
 	 * @return information about the distance of the entity or null, if none was specified
 	 */
-	public @Nullable DistanceObject getDistance() {
+	@Nullable
+	@Contract(pure = true)
+	public DistanceObject getDistance() {
 		return distance;
 	}
 	
@@ -40,6 +45,7 @@ public class LevitationTrigger extends Trigger {
 	 * @param duration the duration or null, if it should be cleared
 	 * @return the current trigger for chaining
 	 */
+	@NotNull
 	public LevitationTrigger setDuration(@Nullable RangeObject duration) {
 		this.duration = duration;
 		return this;
@@ -49,6 +55,7 @@ public class LevitationTrigger extends Trigger {
 	 * @param distance information about the distance of the entity or null, if it should be cleared
 	 * @return the current trigger for chaining
 	 */
+	@NotNull
 	public LevitationTrigger setDistance(@Nullable DistanceObject distance) {
 		this.distance = distance;
 		return this;
@@ -56,9 +63,11 @@ public class LevitationTrigger extends Trigger {
 	
 	
 	
+	@NotNull
+	@Contract(pure = true)
 	@Override
 	protected JsonObject getConditions() {
-		return duration == null && distance == null ? null : new JsonBuilder()
+		return new JsonBuilder()
 				.add("duration", duration)
 				.add("distance", distance)
 				.build();

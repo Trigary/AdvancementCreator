@@ -2,30 +2,35 @@ package hu.trigary.advancementcreator.shared;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
-import org.jetbrains.annotations.Nullable;
 import hu.trigary.advancementcreator.util.JsonBuilder;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Specifies a range of values. Both endpoints are inclusive.
  */
-@SuppressWarnings({"unused", "SameParameterValue"})
 public class RangeObject extends SharedObject {
-	private @Nullable Double min = null;
-	private @Nullable Double max = null;
+	private Number min;
+	private Number max;
 	
 	
 	
 	/**
 	 * @return the lower bound or null, if none is specified
 	 */
-	public @Nullable Double getMin() {
+	@Nullable
+	@Contract(pure = true)
+	public Number getMin() {
 		return min;
 	}
 	
 	/**
 	 * @return the upper bound or null, if none is specified
 	 */
-	public @Nullable Double getMax() {
+	@Nullable
+	@Contract(pure = true)
+	public Number getMax() {
 		return max;
 	}
 	
@@ -35,55 +40,30 @@ public class RangeObject extends SharedObject {
 	 * @param min the lower bound or null, if it should be cleared
 	 * @return the current range object for chaining
 	 */
-	public RangeObject setMin(@Nullable Double min) {
+	@NotNull
+	public RangeObject setMin(@Nullable Number min) {
 		this.min = min;
 		return this;
 	}
 	
 	/**
-	 * @param min the lower bound or null, if it should be cleared
-	 * @return the current range object for chaining
-	 */
-	public RangeObject setMin(@Nullable Integer min) {
-		this.min = min == null ? null : (double)min;
-		return this;
-	}
-	
-	/**
 	 * @param max the upper bound or null, if it should be cleared
 	 * @return the current range object for chaining
 	 */
-	public RangeObject setMax(@Nullable Double max) {
+	@NotNull
+	public RangeObject setMax(@Nullable Number max) {
 		this.max = max;
 		return this;
 	}
 	
 	/**
-	 * @param max the upper bound or null, if it should be cleared
-	 * @return the current range object for chaining
-	 */
-	public RangeObject setMax(@Nullable Integer max) {
-		this.max = max == null ? null : (double)max;
-		return this;
-	}
-	
-	/**
 	 * @param exact the value which is to be assigned to both the lower and the upper bounds
 	 * @return the current range object for chaining
 	 */
-	public RangeObject setExact(double exact) {
+	@NotNull
+	public RangeObject setExact(@Nullable Number exact) {
 		min = exact;
 		max = exact;
-		return this;
-	}
-	
-	/**
-	 * @param exact the value which is to be assigned to both the lower and the upper bounds
-	 * @return the current range object for chaining
-	 */
-	public RangeObject setExact(int exact) {
-		min = (double)exact;
-		max = min;
 		return this;
 	}
 	
@@ -92,6 +72,8 @@ public class RangeObject extends SharedObject {
 	/**
 	 * @return the JSON representation of the range object
 	 */
+	@NotNull
+	@Contract(pure = true)
 	@Override
 	public JsonElement toJson() {
 		if (min != null && min.equals(max)) {

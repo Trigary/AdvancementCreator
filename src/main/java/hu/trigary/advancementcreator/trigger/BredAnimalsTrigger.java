@@ -1,6 +1,8 @@
 package hu.trigary.advancementcreator.trigger;
 
 import com.google.gson.JsonObject;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import hu.trigary.advancementcreator.shared.EntityObject;
 import hu.trigary.advancementcreator.util.JsonBuilder;
@@ -8,11 +10,10 @@ import hu.trigary.advancementcreator.util.JsonBuilder;
 /**
  * Fires whenever two animals are bred and a child is born.
  */
-@SuppressWarnings({"unused", "SameParameterValue"})
 public class BredAnimalsTrigger extends Trigger {
-	private @Nullable EntityObject parent = null;
-	private @Nullable EntityObject partner = null;
-	private @Nullable EntityObject child = null;
+	private EntityObject parent;
+	private EntityObject partner;
+	private EntityObject child;
 	
 	public BredAnimalsTrigger() {
 		super(Type.BRED_ANIMALS);
@@ -23,21 +24,27 @@ public class BredAnimalsTrigger extends Trigger {
 	/**
 	 * @return information about one of the parents (doesn't matter) or null, if none was specified
 	 */
-	public @Nullable EntityObject getParent() {
+	@Nullable
+	@Contract(pure = true)
+	public EntityObject getParent() {
 		return parent;
 	}
 	
 	/**
 	 * @return information about one of the parents (doesn't matter) or null, if none was specified
 	 */
-	public @Nullable EntityObject getPartner() {
+	@Nullable
+	@Contract(pure = true)
+	public EntityObject getPartner() {
 		return partner;
 	}
 	
 	/**
 	 * @return information about the newborn entity or null, if none was specified
 	 */
-	public @Nullable EntityObject getChild() {
+	@Nullable
+	@Contract(pure = true)
+	public EntityObject getChild() {
 		return child;
 	}
 	
@@ -45,8 +52,9 @@ public class BredAnimalsTrigger extends Trigger {
 	
 	/**
 	 * @param parent information about one of the parents (doesn't matter) or null, if it should be cleared
-	 * * @return the current trigger for chaining
+	 * @return the current trigger for chaining
 	 */
+	@NotNull
 	public BredAnimalsTrigger setParent(@Nullable EntityObject parent) {
 		this.parent = parent;
 		return this;
@@ -56,6 +64,7 @@ public class BredAnimalsTrigger extends Trigger {
 	 * @param partner information about one of the parents (doesn't matter) or null, if it should be cleared
 	 * @return the current trigger for chaining
 	 */
+	@NotNull
 	public BredAnimalsTrigger setPartner(@Nullable EntityObject partner) {
 		this.partner = partner;
 		return this;
@@ -65,6 +74,7 @@ public class BredAnimalsTrigger extends Trigger {
 	 * @param child information about the newborn entity or null, if it should be cleared
 	 * @return the current trigger for chaining
 	 */
+	@NotNull
 	public BredAnimalsTrigger setChild(@Nullable EntityObject child) {
 		this.child = child;
 		return this;
@@ -72,9 +82,11 @@ public class BredAnimalsTrigger extends Trigger {
 	
 	
 	
+	@NotNull
+	@Contract(pure = true)
 	@Override
 	protected JsonObject getConditions() {
-		return parent == null && partner == null && child == null ? null : new JsonBuilder()
+		return new JsonBuilder()
 				.add("parent", parent)
 				.add("partner", partner)
 				.add("child", child)

@@ -1,13 +1,13 @@
 package hu.trigary.advancementcreator.shared;
 
+import org.bukkit.Material;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
 /**
  * Specifies a potion's effect.
  */
-@SuppressWarnings("unused")
 public enum Potion implements SharedEnum {
-	/**
-	 * Also known as the uncraftable potion. It is not actually empty: the texture does not equal {@link MaterialId#GLASS_BOTTLE}'s
-	 */
 	EMPTY,
 	WATER,
 	MUNDANE,
@@ -24,9 +24,10 @@ public enum Potion implements SharedEnum {
 	LONG_FIRE_RESISTANCE,
 	SWIFTNESS,
 	STRONG_SWIFTNESS,
-	SLOWNESS,
-	LONG_SLOWNESS,
 	LONG_SWIFTNESS,
+	SLOWNESS,
+	STRONG_SLOWNESS,
+	LONG_SLOWNESS,
 	WATER_BREATHING,
 	LONG_WATER_BREATHING,
 	HEALING,
@@ -44,8 +45,15 @@ public enum Potion implements SharedEnum {
 	LONG_STRENGTH,
 	WEAKNESS,
 	LONG_WEAKNESS,
-	LUCK;
+	LUCK,
+	TURTLE_MASTER,
+	STRONG_TURTLE_MASTER,
+	LONG_TURTLE_MASTER,
+	SLOW_FALLING,
+	LONG_SLOW_FALLING;
 	
+	@NotNull
+	@Contract(pure = true)
 	@Override
 	public String getValue() {
 		return "minecraft:" + name().toLowerCase();
@@ -57,23 +65,22 @@ public enum Potion implements SharedEnum {
 	 * The type of the potion item.
 	 */
 	public enum Type {
-		/**
-		 * Consumable/drinkable.
-		 */
-		NORMAL(MaterialId.POTION),
-		SPLASH(MaterialId.SPLASH_POTION),
-		LINGERING(MaterialId.LINGERING_POTION);
+		NORMAL(Material.POTION),
+		SPLASH(Material.SPLASH_POTION),
+		LINGERING(Material.LINGERING_POTION);
 		
-		private final MaterialId item;
+		private final Material item;
 		
-		Type(MaterialId item) {
+		Type(Material item) {
 			this.item = item;
 		}
 		
 		/**
 		 * @return the item type associated with this potion type
 		 */
-		public MaterialId getItem() {
+		@NotNull
+		@Contract(pure = true)
+		public Material getItem() {
 			return item;
 		}
 	}

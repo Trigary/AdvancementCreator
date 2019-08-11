@@ -1,19 +1,20 @@
 package hu.trigary.advancementcreator.trigger;
 
 import com.google.gson.JsonObject;
-import org.jetbrains.annotations.Nullable;
 import hu.trigary.advancementcreator.shared.DistanceObject;
 import hu.trigary.advancementcreator.shared.LocationObject;
 import hu.trigary.advancementcreator.util.JsonBuilder;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Fires whenever the player enters the nether and then returns to the overworld.
  */
-@SuppressWarnings({"unused", "SameParameterValue"})
 public class NetherTravelTrigger extends Trigger {
-	private @Nullable LocationObject entered = null;
-	private @Nullable LocationObject exited = null;
-	private @Nullable DistanceObject distance = null;
+	private LocationObject entered;
+	private LocationObject exited;
+	private DistanceObject distance;
 	
 	public NetherTravelTrigger() {
 		super(Type.NETHER_TRAVEL);
@@ -24,21 +25,27 @@ public class NetherTravelTrigger extends Trigger {
 	/**
 	 * @return information about the location of the nether portal the player entered through or null, if none was specified
 	 */
-	public @Nullable LocationObject getEntered() {
+	@Nullable
+	@Contract(pure = true)
+	public LocationObject getEntered() {
 		return entered;
 	}
 	
 	/**
 	 * @return information about the location of the nether portal the player arrived to in the overworld or null, if none was specified
 	 */
-	public @Nullable LocationObject getExited() {
+	@Nullable
+	@Contract(pure = true)
+	public LocationObject getExited() {
 		return exited;
 	}
 	
 	/**
 	 * @return information about the distance of the two nether portals in the overworld or null, if none was specified
 	 */
-	public @Nullable DistanceObject getDistance() {
+	@Nullable
+	@Contract(pure = true)
+	public DistanceObject getDistance() {
 		return distance;
 	}
 	
@@ -48,6 +55,7 @@ public class NetherTravelTrigger extends Trigger {
 	 * @param entered information about the location of the nether portal the player entered through or null, if it should be cleared
 	 * @return the current trigger for chaining
 	 */
+	@NotNull
 	public NetherTravelTrigger setEntered(@Nullable LocationObject entered) {
 		this.entered = entered;
 		return this;
@@ -57,6 +65,7 @@ public class NetherTravelTrigger extends Trigger {
 	 * @param exited information about the location of the nether portal the player arrived to in the overworld or null, if it should be cleared
 	 * @return the current trigger for chaining
 	 */
+	@NotNull
 	public NetherTravelTrigger setExited(@Nullable LocationObject exited) {
 		this.exited = exited;
 		return this;
@@ -66,6 +75,7 @@ public class NetherTravelTrigger extends Trigger {
 	 * @param distance information about the distance of the two nether portals in the overworld or null, if it should be cleared
 	 * @return the current trigger for chaining
 	 */
+	@NotNull
 	public NetherTravelTrigger setDistance(@Nullable DistanceObject distance) {
 		this.distance = distance;
 		return this;
@@ -73,9 +83,11 @@ public class NetherTravelTrigger extends Trigger {
 	
 	
 	
+	@NotNull
+	@Contract(pure = true)
 	@Override
 	protected JsonObject getConditions() {
-		return entered == null && exited == null && distance == null ? null : new JsonBuilder()
+		return new JsonBuilder()
 				.add("entered", entered)
 				.add("exited", exited)
 				.add("distance", distance)

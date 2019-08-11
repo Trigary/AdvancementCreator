@@ -8,19 +8,19 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Fires whenever the player uses a Totem of Undying.
+ * Fires when a player fills a bucket with lava, water or a fish.
  */
-public class UsedTotemTrigger extends Trigger {
+public class FilledBucketTrigger extends Trigger {
 	private ItemObject item;
 	
-	public UsedTotemTrigger() {
-		super(Type.USED_TOTEM);
+	public FilledBucketTrigger() {
+		super(Type.FILLED_BUCKET);
 	}
 	
 	
 	
 	/**
-	 * @return information about the item before it was consumed or null, if none was specified
+	 * @return the bucket item after it was filled or null, if none was specified
 	 */
 	@Nullable
 	@Contract(pure = true)
@@ -29,11 +29,11 @@ public class UsedTotemTrigger extends Trigger {
 	}
 	
 	/**
-	 * @param item information about the item before it was consumed or null, if it should be cleared
+	 * @param item the bucket item after it was filled or null, if it should be cleared
 	 * @return the current trigger for chaining
 	 */
 	@NotNull
-	public UsedTotemTrigger setItem(@Nullable ItemObject item) {
+	public FilledBucketTrigger setItem(@Nullable ItemObject item) {
 		this.item = item;
 		return this;
 	}

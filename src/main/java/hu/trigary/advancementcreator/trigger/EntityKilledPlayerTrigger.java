@@ -1,15 +1,16 @@
 package hu.trigary.advancementcreator.trigger;
 
 import com.google.gson.JsonObject;
-import org.jetbrains.annotations.Nullable;
 import hu.trigary.advancementcreator.shared.DeathObject;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Fires whenever any mob, excluding players kills the player.
  */
-@SuppressWarnings({"unused", "SameParameterValue"})
 public class EntityKilledPlayerTrigger extends Trigger {
-	private @Nullable DeathObject death = null;
+	private DeathObject death;
 	
 	public EntityKilledPlayerTrigger() {
 		super(Type.ENTITY_KILLED_PLAYER);
@@ -20,7 +21,9 @@ public class EntityKilledPlayerTrigger extends Trigger {
 	/**
 	 * @return information about the death event or null, if none was specified
 	 */
-	public @Nullable DeathObject getDeath() {
+	@Nullable
+	@Contract(pure = true)
+	public DeathObject getDeath() {
 		return death;
 	}
 	
@@ -28,6 +31,7 @@ public class EntityKilledPlayerTrigger extends Trigger {
 	 * @param death information about the death event or null, if it should be cleared
 	 * @return the current trigger for chaining
 	 */
+	@NotNull
 	public EntityKilledPlayerTrigger setDeath(@Nullable DeathObject death) {
 		this.death = death;
 		return this;
@@ -35,8 +39,10 @@ public class EntityKilledPlayerTrigger extends Trigger {
 	
 	
 	
+	@NotNull
+	@Contract(pure = true)
 	@Override
 	protected JsonObject getConditions() {
-		return death == null ? null : death.toJson();
+		return death == null ? new JsonObject() : death.toJson();
 	}
 }

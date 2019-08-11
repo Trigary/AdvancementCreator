@@ -1,17 +1,18 @@
 package hu.trigary.advancementcreator.trigger;
 
 import com.google.gson.JsonObject;
-import org.jetbrains.annotations.Nullable;
 import hu.trigary.advancementcreator.shared.Dimension;
 import hu.trigary.advancementcreator.util.JsonBuilder;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Fires whenever the player switches to another dimension.
  */
-@SuppressWarnings({"unused", "SameParameterValue"})
 public class ChangedDimensionTrigger extends Trigger {
-	@Nullable Dimension to = null;
-	@Nullable Dimension from = null;
+	private Dimension to;
+	private Dimension from;
 	
 	public ChangedDimensionTrigger() {
 		super(Type.CHANGED_DIMENSION);
@@ -22,14 +23,18 @@ public class ChangedDimensionTrigger extends Trigger {
 	/**
 	 * @return the dimension the player has just entered or null, if none was specified
 	 */
-	public @Nullable Dimension getTo() {
+	@Nullable
+	@Contract(pure = true)
+	public Dimension getTo() {
 		return to;
 	}
 	
 	/**
 	 * @return the dimension the player has just left or null, if none was specified
 	 */
-	public @Nullable Dimension getFrom() {
+	@Nullable
+	@Contract(pure = true)
+	public Dimension getFrom() {
 		return from;
 	}
 	
@@ -39,6 +44,7 @@ public class ChangedDimensionTrigger extends Trigger {
 	 * @param to the dimension the player has just entered or null, if it should be cleared
 	 * @return the current trigger for chaining
 	 */
+	@NotNull
 	public ChangedDimensionTrigger setTo(@Nullable Dimension to) {
 		this.to = to;
 		return this;
@@ -48,6 +54,7 @@ public class ChangedDimensionTrigger extends Trigger {
 	 * @param from the dimension the player has just left or null, if it should be cleared
 	 * @return the current trigger for chaining
 	 */
+	@NotNull
 	public ChangedDimensionTrigger setFrom(@Nullable Dimension from) {
 		this.from = from;
 		return this;
@@ -55,9 +62,11 @@ public class ChangedDimensionTrigger extends Trigger {
 	
 	
 	
+	@NotNull
+	@Contract(pure = true)
 	@Override
 	protected JsonObject getConditions() {
-		return to == null && from == null ? null : new JsonBuilder()
+		return new JsonBuilder()
 				.add("to", to)
 				.add("from", from)
 				.build();

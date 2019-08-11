@@ -1,18 +1,19 @@
 package hu.trigary.advancementcreator.trigger;
 
 import com.google.gson.JsonObject;
-import org.jetbrains.annotations.Nullable;
 import hu.trigary.advancementcreator.shared.DamageObject;
 import hu.trigary.advancementcreator.shared.EntityObject;
 import hu.trigary.advancementcreator.util.JsonBuilder;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Fires whenever a player deals any amount of damage (including 0) to an entity (excluding players).
  */
-@SuppressWarnings({"unused", "SameParameterValue"})
 public class PlayerHurtEntityTrigger extends Trigger {
-	private @Nullable DamageObject damage = null;
-	private @Nullable EntityObject entity = null;
+	private DamageObject damage;
+	private EntityObject entity;
 	
 	public PlayerHurtEntityTrigger() {
 		super(Type.PLAYER_HURT_ENTITY);
@@ -23,14 +24,18 @@ public class PlayerHurtEntityTrigger extends Trigger {
 	/**
 	 * @return information about the damage event or null, if none was specified
 	 */
-	public @Nullable DamageObject getDamage() {
+	@Nullable
+	@Contract(pure = true)
+	public DamageObject getDamage() {
 		return damage;
 	}
 	
 	/**
 	 * @return information about the entity that the player had damaged or null, if none was specified
 	 */
-	public @Nullable EntityObject getEntity() {
+	@Nullable
+	@Contract(pure = true)
+	public EntityObject getEntity() {
 		return entity;
 	}
 	
@@ -40,6 +45,7 @@ public class PlayerHurtEntityTrigger extends Trigger {
 	 * @param damage information about the damage event or null, if it should be cleared
 	 * @return the current trigger for chaining
 	 */
+	@NotNull
 	public PlayerHurtEntityTrigger setDamage(@Nullable DamageObject damage) {
 		this.damage = damage;
 		return this;
@@ -49,6 +55,7 @@ public class PlayerHurtEntityTrigger extends Trigger {
 	 * @param entity information about the entity that the player had damaged or null, if it should be cleared
 	 * @return the current trigger for chaining
 	 */
+	@NotNull
 	public PlayerHurtEntityTrigger setEntity(@Nullable EntityObject entity) {
 		this.entity = entity;
 		return this;
@@ -56,9 +63,11 @@ public class PlayerHurtEntityTrigger extends Trigger {
 	
 	
 	
+	@NotNull
+	@Contract(pure = true)
 	@Override
 	protected JsonObject getConditions() {
-		return damage == null && entity == null ? null : new JsonBuilder()
+		return new JsonBuilder()
 				.add("damage", damage)
 				.add("entity", entity)
 				.build();

@@ -7,20 +7,19 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Fires when the player successfully enters a bed (the player does not have to pass the night).
- * For example if the bed explodes, such as from trying to sleep in the nether, this trigger will not fire.
+ * Fires when a pillager raid the player participated in (by killing a member of the raid) was vanquished.
  */
-public class SleptInBedTrigger extends Trigger {
+public class HeroOfTheVillageTrigger extends Trigger {
 	private LocationObject location;
 	
-	public SleptInBedTrigger() {
-		super(Type.SLEPT_IN_BED);
+	public HeroOfTheVillageTrigger() {
+		super(Type.HERO_OF_THE_VILLAGE);
 	}
 	
 	
 	
 	/**
-	 * @return information about the location of the sleeping player or null, if none was specified
+	 * @return the player's location or null, if none was specified
 	 */
 	@Nullable
 	@Contract(pure = true)
@@ -29,11 +28,11 @@ public class SleptInBedTrigger extends Trigger {
 	}
 	
 	/**
-	 * @param location information about the location of the sleeping player or null, if it should be cleared
+	 * @param location the player's location or null, if it should be cleared
 	 * @return the current trigger for chaining
 	 */
 	@NotNull
-	public SleptInBedTrigger setLocation(@Nullable LocationObject location) {
+	public HeroOfTheVillageTrigger setLocation(@Nullable LocationObject location) {
 		this.location = location;
 		return this;
 	}

@@ -6,8 +6,12 @@ import hu.trigary.advancementcreator.trigger.LocationTrigger;
 import hu.trigary.advancementcreator.trigger.PlacedBlockTrigger;
 import hu.trigary.advancementcreator.trigger.PlayerHurtEntityTrigger;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.StructureType;
 import org.bukkit.block.Biome;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.EntityType;
 import org.bukkit.plugin.Plugin;
 import org.junit.Assert;
 import org.junit.Before;
@@ -15,8 +19,8 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 public class AdvancementTest {
-	private Plugin plugin = null;
-	private AdvancementFactory factory = null;
+	private Plugin plugin;
+	private AdvancementFactory factory;
 	
 	@Before
 	public void setUp() {
@@ -39,17 +43,17 @@ public class AdvancementTest {
 	
 	@Test
 	public void testFactory() {
-		Advancement root = factory.getRoot("test/root", "Root", "Test Advancements", MaterialId.STONE, "blocks/gravel");
+		Advancement root = factory.getRoot("test/root", "Root", "Test Advancements", Material.STONE, "blocks/gravel");
 		
-		Advancement manual = new Advancement(new NamespacedKey(plugin, "test/id"), new ItemObject().setItem(MaterialId.BEACON),
+		Advancement manual = new Advancement(new NamespacedKey(plugin, "test/id"), new ItemObject().setItem(Material.BEACON),
 				new TextComponent("Bacon Lover"), new TextComponent("Have 3 beacons in your inventory at once"))
 				.addTrigger("item", new InventoryChangedTrigger().addItem(new ItemObject()
-						.setItem(MaterialId.BEACON).setCount(new RangeObject().setMin(3))))
+						.setItem(Material.BEACON).setCount(new RangeObject().setMin(3))))
 				.makeChild(root.getId())
 				.setFrame(Advancement.Frame.GOAL);
 		
 		Advancement automated = factory.getItem("test/id", root, "Bacon Lover", "Have 3 beacons in your inventory at once",
-				MaterialId.BEACON, 3, -1)
+				Material.BEACON, 3)
 				.setFrame(Advancement.Frame.GOAL);
 		
 		Assert.assertEquals(manual, automated);
@@ -74,10 +78,10 @@ public class AdvancementTest {
 						.setX(new RangeObject().setMin(1))
 						.setY(new RangeObject().setMax(1))
 						.setBiome(Biome.DESERT)
-						.setFeature(Feature.TEMPLE)
+						.setFeature(StructureType.JUNGLE_PYRAMID)
 						.setDimension(Dimension.OVERWORLD)))
 				.addTrigger("2", new PlayerHurtEntityTrigger().setEntity(new EntityObject()
-						.setType(MobType.ZOMBIE)
+						.setType(EntityType.ZOMBIE)
 						.setDistance(new DistanceObject().setAbsolute(new RangeObject().setExact(1)))
 						.setEffects(new StatusEffectsObject().setEffect(Effect.STRENGTH, new EffectObject().setVisible(true)))
 						.setNbt("{NoAI:0}"))
@@ -85,9 +89,9 @@ public class AdvancementTest {
 								.setBypassesInvulnerability(true)
 								.setExplosion(true))))
 				.addTrigger("3", new PlacedBlockTrigger().setItem(new ItemObject()
-						.setItem(MaterialId.GRASS)
+						.setItem(Material.GRASS)
 						.setPotion(Potion.LONG_INVISIBILITY)
-						.addEnchant(new EnchantObject().setEnchant(Enchant.FLAME)))
-						.setBlock(new BlockObject(MaterialId.GRASS).setState("snowy", "true")));
+						.addEnchant(new EnchantObject().setEnchant(Enchantment.ARROW_FIRE)))
+						.setBlock(new BlockObject(Material.GRASS).setState("snowy", "true")));
 	}
 }

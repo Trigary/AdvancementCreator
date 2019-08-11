@@ -1,16 +1,17 @@
 package hu.trigary.advancementcreator.trigger;
 
 import com.google.gson.JsonObject;
-import org.jetbrains.annotations.Nullable;
 import hu.trigary.advancementcreator.shared.RangeObject;
 import hu.trigary.advancementcreator.util.JsonBuilder;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Fires whenever the player uses an Eye of Ender.
  */
-@SuppressWarnings({"unused", "SameParameterValue"})
 public class UsedEnderEyeTrigger extends Trigger {
-	private @Nullable RangeObject distance = null;
+	private RangeObject distance;
 	
 	public UsedEnderEyeTrigger() {
 		super(Type.USED_ENDER_EYE);
@@ -21,7 +22,9 @@ public class UsedEnderEyeTrigger extends Trigger {
 	/**
 	 * @return information about the distance of the player and the nearest stronghold's center or null, if none was specified. The vertical distance is not included
 	 */
-	public @Nullable RangeObject getDistance() {
+	@Nullable
+	@Contract(pure = true)
+	public RangeObject getDistance() {
 		return distance;
 	}
 	
@@ -29,6 +32,7 @@ public class UsedEnderEyeTrigger extends Trigger {
 	 * @param distance information about the distance of the player and the nearest stronghold's center or null, if it should be cleared. The vertical distance is not included
 	 * @return the current trigger for chaining
 	 */
+	@NotNull
 	public UsedEnderEyeTrigger setDistance(@Nullable RangeObject distance) {
 		this.distance = distance;
 		return this;
@@ -36,9 +40,11 @@ public class UsedEnderEyeTrigger extends Trigger {
 	
 	
 	
+	@NotNull
+	@Contract(pure = true)
 	@Override
 	protected JsonObject getConditions() {
-		return distance == null ? null : new JsonBuilder()
+		return new JsonBuilder()
 				.add("distance", distance)
 				.build();
 	}

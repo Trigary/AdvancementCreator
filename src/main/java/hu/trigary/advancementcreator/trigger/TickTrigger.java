@@ -1,6 +1,7 @@
 package hu.trigary.advancementcreator.trigger;
 
 import com.google.gson.JsonObject;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Fires every tick. Can be used to help simulate command block systems or automatically unlock advancements.
@@ -11,8 +12,9 @@ public class TickTrigger extends Trigger {
 		super(Type.TICK);
 	}
 	
+	@NotNull
 	@Override
 	protected JsonObject getConditions() {
-		return null;
+		return new JsonObject();
 	}
 }

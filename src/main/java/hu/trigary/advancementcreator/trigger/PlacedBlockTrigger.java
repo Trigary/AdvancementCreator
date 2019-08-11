@@ -1,19 +1,21 @@
 package hu.trigary.advancementcreator.trigger;
 
 import com.google.gson.JsonObject;
-import org.jetbrains.annotations.Nullable;
 import hu.trigary.advancementcreator.shared.BlockObject;
 import hu.trigary.advancementcreator.shared.ItemObject;
 import hu.trigary.advancementcreator.shared.LocationObject;
+import hu.trigary.advancementcreator.util.JsonBuilder;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Fires whenever the player places a block.
  */
-@SuppressWarnings({"unused", "SameParameterValue"})
 public class PlacedBlockTrigger extends Trigger {
-	private @Nullable BlockObject block = null;
-	private @Nullable ItemObject item = null;
-	private @Nullable LocationObject location = null;
+	private BlockObject block;
+	private ItemObject item;
+	private LocationObject location;
 	
 	public PlacedBlockTrigger() {
 		super(Type.PLACED_BLOCK);
@@ -24,21 +26,27 @@ public class PlacedBlockTrigger extends Trigger {
 	/**
 	 * @return information about the newly placed block or null, if none was specified
 	 */
-	public @Nullable BlockObject getBlock() {
+	@Nullable
+	@Contract(pure = true)
+	public BlockObject getBlock() {
 		return block;
 	}
 	
 	/**
 	 * @return information about the item which was used to create the block or null, if none was specified
 	 */
-	public @Nullable ItemObject getItem() {
+	@Nullable
+	@Contract(pure = true)
+	public ItemObject getItem() {
 		return item;
 	}
 	
 	/**
 	 * @return information about the location where the block was placed or null, if none was specified
 	 */
-	public @Nullable LocationObject getLocation() {
+	@Nullable
+	@Contract(pure = true)
+	public LocationObject getLocation() {
 		return location;
 	}
 	
@@ -48,6 +56,7 @@ public class PlacedBlockTrigger extends Trigger {
 	 * @param block information about the newly placed block or null, if it should be cleared
 	 * @return the current trigger for chaining
 	 */
+	@NotNull
 	public PlacedBlockTrigger setBlock(@Nullable BlockObject block) {
 		this.block = block;
 		return this;
@@ -57,6 +66,7 @@ public class PlacedBlockTrigger extends Trigger {
 	 * @param location information about the item which was used to create the block or null, if it should be cleared
 	 * @return the current trigger for chaining
 	 */
+	@NotNull
 	public PlacedBlockTrigger setLocation(@Nullable LocationObject location) {
 		this.location = location;
 		return this;
@@ -66,6 +76,7 @@ public class PlacedBlockTrigger extends Trigger {
 	 * @param item information about the location where the block was placed or null, if it should be cleared
 	 * @return the current trigger for chaining
 	 */
+	@NotNull
 	public PlacedBlockTrigger setItem(@Nullable ItemObject item) {
 		this.item = item;
 		return this;
@@ -73,15 +84,13 @@ public class PlacedBlockTrigger extends Trigger {
 	
 	
 	
+	@NotNull
+	@Contract(pure = true)
 	@Override
 	protected JsonObject getConditions() {
-		JsonObject json = block == null ? new JsonObject() : block.toJson();
-		if (item != null) {
-			json.add("item", item.toJson());
-		}
-		if (location != null) {
-			json.add("location", location.toJson());
-		}
-		return json;
+		return (block == null ? new JsonBuilder() : new JsonBuilder(block.toJson()))
+				.add("item", item)
+				.add("location", location)
+				.build();
 	}
 }

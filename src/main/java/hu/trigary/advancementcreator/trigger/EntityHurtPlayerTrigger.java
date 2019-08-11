@@ -1,16 +1,17 @@
 package hu.trigary.advancementcreator.trigger;
 
 import com.google.gson.JsonObject;
-import org.jetbrains.annotations.Nullable;
 import hu.trigary.advancementcreator.shared.DamageObject;
 import hu.trigary.advancementcreator.util.JsonBuilder;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Fires whenever whenever the player takes damage, even if that damage is 0 or blocked.
  */
-@SuppressWarnings({"unused", "SameParameterValue"})
 public class EntityHurtPlayerTrigger extends Trigger {
-	private @Nullable DamageObject damage = null;
+	private DamageObject damage;
 	
 	public EntityHurtPlayerTrigger() {
 		super(Type.ENTITY_HURT_PLAYER);
@@ -21,7 +22,9 @@ public class EntityHurtPlayerTrigger extends Trigger {
 	/**
 	 * @return information about the damage event or null, if none was specified
 	 */
-	public @Nullable DamageObject getDamage() {
+	@Nullable
+	@Contract(pure = true)
+	public DamageObject getDamage() {
 		return damage;
 	}
 	
@@ -29,6 +32,7 @@ public class EntityHurtPlayerTrigger extends Trigger {
 	 * @param damage information about the damage event or null, if it should be cleared
 	 * @return the current trigger for chaining
 	 */
+	@NotNull
 	public EntityHurtPlayerTrigger setDamage(@Nullable DamageObject damage) {
 		this.damage = damage;
 		return this;
@@ -36,9 +40,11 @@ public class EntityHurtPlayerTrigger extends Trigger {
 	
 	
 	
+	@NotNull
+	@Contract(pure = true)
 	@Override
 	protected JsonObject getConditions() {
-		return damage == null ? null : new JsonBuilder()
+		return new JsonBuilder()
 				.add("damage", damage)
 				.build();
 	}

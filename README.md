@@ -34,7 +34,7 @@ repositories {
 }
 
 dependencies {
-  compile 'com.github.Trigary:AdvancementCreator:v1.1'
+  compile 'com.github.Trigary:AdvancementCreator:v2.0'
 }
 ```
 
@@ -52,7 +52,7 @@ dependencies {
  <dependency>
   <groupId>com.github.Trigary</groupId>
   <artifactId>AdvancementCreator</artifactId>
-  <version>v1.1</version>
+  <version>v2.0</version>
  </dependency>
 </dependencies>
 ```
@@ -70,15 +70,15 @@ public class Main extends JavaPlugin {
         AdvancementFactory factory = new AdvancementFactory(this, true, false);
         
         //Create a root advancement which is also automatically unlocked (with a player head icon)
-        Advancement root = factory.getRoot("newbie/root", "Getting Started", "Newbie Advancements", MaterialId.SKULL, 3, "blocks/dirt");
+        Advancement root = factory.getRoot("newbie/root", "Getting Started", "Newbie Advancements", Material.PLAYER_HEAD, "block/dirt");
         
         //One of the most common advancements, the requirement is that you obtain an item:
-        Advancement wood = factory.getItem("newbie/wood", root, "Chopper", "Chop down a tree", MaterialId.LOG);
-        Advancement workbench = factory.getItem("newbie/workbench", wood, "Crafter", "Craft yourself a crafting table", MaterialId.CRAFTING_TABLE);
-        Advancement sword = factory.getAnyItem("newbie/sword", workbench, "Armed to Teeth", "Craft a sword", MaterialId.WOODEN_SWORD, MaterialId.STONE_SWORD);
+        Advancement wood = factory.getItem("newbie/wood", root, "Chopper", "Chop down a tree", Material.OAK_LOG);
+        Advancement workbench = factory.getItem("newbie/workbench", wood, "Crafter", "Craft yourself a crafting table", Material.CRAFTING_TABLE);
+        Advancement sword = factory.getAnyItem("newbie/sword", workbench, "Armed to Teeth", "Craft a sword", Material.WOODEN_SWORD, Material.STONE_SWORD);
         
         //I could still use a factory, but I wanted to give an example of how development works without it:
-        new Advancement(new NamespacedKey(this, "newbie/kill"), new ItemObject().setItem(MaterialId.STONE_SWORD),
+        new Advancement(new NamespacedKey(this, "newbie/kill"), new ItemObject().setItem(Material.STONE_SWORD),
                 new TextComponent("Harvester"), new TextComponent("Put your weapon to good use"))
                 .addTrigger("kill", new PlayerKilledEntityTrigger())
                 .makeChild(sword.getId())
